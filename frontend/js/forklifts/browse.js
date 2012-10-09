@@ -22,7 +22,7 @@ $(function()
           });
         }
 
-        $.quickAlert('success', 'Wózek został usunięty pomyślnie');
+        $.quickAlert('success', 'Wózek został pomyślnie usunięty :)');
       },
       error: function()
       {
