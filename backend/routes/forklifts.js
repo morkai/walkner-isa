@@ -90,7 +90,27 @@ function showEditForkliftForm(app, req, res, next)
 
 function showDeleteForkliftForm(app, req, res, next)
 {
-  res.send(500);
+  var Forklift = app.db.model('Forklift');
+
+  Forklift.findById(req.params.id, function(err, forklift)
+  {
+    if (err)
+    {
+      return next(err);
+    }
+
+    if (forklift === null)
+    {
+      return res.send(404);
+    }
+
+    res.format({
+      html: function()
+      {
+        res.render('forklifts/delete', {forklift: forklift});
+      }
+    });
+  });
 }
 
 function createForklift(app, req, res, next)
