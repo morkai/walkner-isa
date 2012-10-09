@@ -1,0 +1,15 @@
+extends ../page
+
+prepend page-title
+  | Dodawanie nowego wózka -
+
+block page-breadcrumbs
+  li: a(href='/forklifts') Wózki
+  li Dodawanie
+
+block content
+  form#addForkliftForm(method='post', action='/forklifts', autocomplete='off')
+    include form
+
+append scripts
+  script(src='/js/forklifts/form.js')

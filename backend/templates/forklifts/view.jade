@@ -1,0 +1,17 @@
+extends ../page
+
+prepend page-title
+  | Wózek -
+
+block page-breadcrumbs
+  li: a(href='/forklifts') Wózki
+  li= forklift.name
+
+block page-actions
+  li!= actionText('edit', '/forklifts/' + forklift.id + ';edit', 'Edytuj')
+  li!= actionText('remove', '/forklifts/' + forklift.id + ';delete', 'Usuń')
+
+block content
+  dl.well
+    dt Nazwa
+    dd= forklift.name

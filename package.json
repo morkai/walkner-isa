@@ -1,0 +1,29 @@
+{
+  "name": "walkner-isa",
+  "version": "0.0.1",
+  "description": "Intermediate Storage Area management and monitoring application.",
+  "license": "CC BY-NC 3.0",
+  "homepage": "https://github.com/morkai/walkner-isa",
+  "author": {
+    "name": "Łukasz Walukiewicz",
+    "email": "lukasz@walukiewicz.eu",
+    "url": "http://lukasz.walukiewicz.eu/"
+  },
+  "bugs": "https://github.com/morkai/walkner-isa/issues",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/morkai/walkner-isa.git"
+  },
+  "engine": ["node >=0.8.0"],
+  "main": "./backend/server",
+  "dependencies": {
+    "mongodb"        : "1.1.8",
+    "mongoose"       : "3.2.2-pre",
+    "connect"        : "2.5.0",
+    "express"        : "3.0.0rc4",
+    "jade"           : "0.27.6",
+    "socket.io"      : "0.9.10",
+    "step"           : "0.0.5",
+    "underscore"     : "1.4.1"
+  }
+}

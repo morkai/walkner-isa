@@ -1,0 +1,45 @@
+extends ../page
+
+prepend page-title
+  | Wózki -
+
+block page-breadcrumbs
+  li Wózki
+
+block page-actions
+  li!= actionText('plus', '/forklifts;add', 'Dodaj nowy wózek')
+
+block content
+  table#forkliftsTable.table.table-bordered.table-condensed
+    thead
+      th Nazwa
+      th.actions Akcje
+    tbody
+      if forklifts.length === 0
+        tr
+          td(colspan=2) Brak wózków.
+      else
+        each forklift in forklifts
+          tr('data-id'=forklift.id)
+            td= forklift.name
+            td.actions
+              != actionIcon('list', '/forklifts/' + forklift.id, 'Wyświetl szczegóły wózka')
+              != actionIcon('pencil', '/forklifts/' + forklift.id + ';edit', 'Edytuj wózek')
+              a.btn.action-delete(
+                href='/forklifts/' + forklift.id + ';delete',
+                title='Usuń wózek',
+                'data-toggle'='modal',
+                'data-target'='#deleteForkliftDialog',
+                'data-remote'='false'): i.icon-remove
+  div#deleteForkliftDialog.modal.hide(tabindex=-1)
+    .modal-header
+      button.close(type='button', 'data-dismiss'='modal') ×
+      h3 Usuwanie wózka
+    .modal-body
+      p Czy na pewno chcesz usunąć wybrany wózek?
+    .modal-footer
+      button.btn('data-dismiss'='modal') Anuluj
+      a.btn.btn-primary.btn-danger(href='#') Usuń wózek
+
+append scripts
+  script(src='/js/forklifts/browse.js')

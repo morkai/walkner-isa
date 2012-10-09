@@ -1,0 +1,36 @@
+doctype 5
+html
+  head
+    meta(charset='utf-8')
+    title
+      block page-title
+        | ISA
+    block head
+      link(rel='stylesheet', href='/vendor/bootstrap/css/bootstrap.min.css')
+      link(rel='stylesheet', href='/css/app.css')
+  body
+    #hd
+      .navbar.navbar-static-top
+        .navbar-inner
+          span.brand ISA
+          ul.nav
+            each menuItem in menuItems
+              li(class=menuItem.active ? 'active' : ''): a(href=menuItem.href)= menuItem.label
+      .page-alerts
+      .page-header
+        ul.page-actions
+          block page-actions
+        h1: ul.page-breadcrumbs
+          block page-breadcrumbs
+    #bd
+      block content
+    #ft
+      p
+        | created by&nbsp;
+        a(href='http://walkner.pl/') walkner.pl
+    block scripts
+      script(src='/vendor/jquery/jquery.min.js')
+      script(src='/vendor/jquery/jquery.validate.min.js')
+      script(src='/vendor/jquery/jquery.validate.pl.js')
+      script(src='/vendor/bootstrap/js/bootstrap.min.js')
+      script(src='/js/app.js')

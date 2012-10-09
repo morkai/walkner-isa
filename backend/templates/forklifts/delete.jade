@@ -1,0 +1,19 @@
+div#deleteForkliftDialog.modal.hide(tabindex=-1)
+  .modal-header
+    button.close(type='button', 'data-dismiss'='modal') ×
+    h3 Usuwanie wózka
+  .modal-body
+    p Czy na pewno chcesz usunąć wybrany wózek?
+  .modal-footer
+    button.btn('data-dismiss'='modal') Anuluj
+    button.btn.btn-primary.btn-danger Usuń wózek
+
+append scripts
+  script
+    $(function()
+    {
+      $('#deleteForkliftDialog .btn-primary').on('click', function()
+      {
+        $.
+      });
+    });

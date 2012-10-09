@@ -1,0 +1,17 @@
+extends ../page
+
+prepend page-title
+  | Edytowanie wózka -
+
+block page-breadcrumbs
+  li: a(href='/forklifts') Wózki
+  li: a(href='/forklifts/#{forklift.id}')= forklift.name
+  li Edycja
+
+block content
+  form#editForkliftForm(method='post', action='/forklifts/#{forklift.id}', autocomplete='off')
+    input(name='_method', value='put', type='hidden')
+    include form
+
+append scripts
+  script(src='/js/forklifts/form.js')
