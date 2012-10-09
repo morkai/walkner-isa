@@ -1,0 +1,6 @@
+- var flashMessages = flash()
+each flashMessage in flashMessages
+  - var alertClasses = ['alert', 'alert-' + flashMessage.type, 'fade', 'in']
+  div(class=alertClasses, 'data-timeout'=flashMessage.time)
+    button.close(type='button', 'data-dismiss'='alert') ×
+    != flashMessage.text

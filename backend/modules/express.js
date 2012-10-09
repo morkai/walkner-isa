@@ -16,6 +16,7 @@ exports.start = function startExpressModule(app, done)
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(require(app.path('middleware/menu'))(app));
+  app.use(require(app.path('middleware/flash'))(app));
   app.use(app.router);
 
   app.configure('development', function()

@@ -66,5 +66,11 @@ $.validator.setDefaults({
 
 $(function()
 {
+  $('#hd .alert[data-timeout]').each(function()
+  {
+    var $alert = $(this);
+    var timeout = parseInt($alert.attr('data-timeout'));
 
+    setTimeout(function() { $alert.alert('close'); }, timeout);
+  });
 });

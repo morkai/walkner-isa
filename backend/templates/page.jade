@@ -17,6 +17,7 @@ html
             each menuItem in menuItems
               li(class=menuItem.active ? 'active' : ''): a(href=menuItem.href)= menuItem.label
       .page-alerts
+      include flash
       .page-header
         ul.page-actions
           block page-actions

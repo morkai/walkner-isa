@@ -15,8 +15,11 @@ body {
   display: block;
   text-align: center;
 }
-#hd .alert {
+#hd .page-alerts .alert {
   display: inline-block;
+}
+#hd > .alert {
+  margin: 1em;
 }
 #bd {
   margin: 1em;
