@@ -128,6 +128,7 @@ function createForklift(app, req, res, next)
     res.format({
       html: function()
       {
+        res.flash('success', 'Nowy wózek został pomyślnie dodany :)');
         res.redirect(303, '/forklifts/' + forklift.id);
       },
       json: function()
@@ -194,6 +195,7 @@ function updateForklift(app, req, res, next)
       res.format({
         html: function()
         {
+          res.flash('success', 'Wózek został pomyślnie zmodyfikowany :)');
           res.redirect(303, '/forklifts/' + forklift.id);
         },
         json: function()
@@ -231,6 +233,7 @@ function deleteForklift(app, req, res, next)
       res.format({
         html: function()
         {
+          res.flash('success', 'Wózek został pomyślnie usunięty :)');
           res.redirect('/forklifts');
         },
         json: function()
