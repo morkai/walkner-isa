@@ -152,6 +152,7 @@ module.exports = function(Store)
       }
 
       var doc = {
+        _id: sid,
         expires: Date.parse(session.cookie.expires),
         data: JSON.stringify(session)
       };
