@@ -6,5 +6,41 @@ prepend page-title
 block page-breadcrumbs
   li Pola odkładcze
 
+block page-actions
+  li!= actionText('plus', '/storageAreas;add', 'Dodaj nowe pole odkładcze')
+
 block content
-  p TODO
+  table#storageAreasTable.table.table-bordered.table-condensed('data-perPage'=pager.limit)
+    thead
+      th Nazwa
+      th.actions Akcje
+    tbody
+      if storageAreas.length === 0
+        tr
+          td(colspan=2) Brak pól odkładczych.
+      else
+        each storageArea in storageAreas
+          tr('data-id'=storageArea.id)
+            td= storageArea.name
+            td.actions
+              != actionIcon('list', '/storageAreas/' + storageArea.id, 'Wyświetl szczegóły pola odkładczego')
+              != actionIcon('pencil', '/storageAreas/' + storageArea.id + ';edit', 'Edytuj pole odkładcze')
+              a.btn.action-delete(
+                href='/storageAreas/' + storageArea.id + ';delete',
+                title='Usuń pole odkładcze',
+                'data-toggle'='modal',
+                'data-target'='#deleteStorageAreaDialog',
+                'data-remote'='false'): i.icon-remove
+  != pager.render()
+  div#deleteStorageAreaDialog.modal.hide(tabindex=-1)
+    .modal-header
+      button.close(type='button', 'data-dismiss'='modal') ×
+      h3 Usuwanie pola odkładczego
+    .modal-body
+      p Czy na pewno chcesz usunąć wybrane pole odkładcze?
+    .modal-footer
+      button.btn('data-dismiss'='modal') Anuluj
+      a.btn.btn-primary.btn-danger(href='#') Usuń pole odkładcze
+
+append scripts
+  script(src='/js/storageAreas/browse.js')

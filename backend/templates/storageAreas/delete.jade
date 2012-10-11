@@ -1,0 +1,16 @@
+extends ../page
+
+prepend page-title
+  | Usuwanie pola odkładczego -
+
+block page-breadcrumbs
+  li: a(href='/storageAreas') Pola odkładcze
+  li: a(href='/storageAreas/#{storageArea.id}')= storageArea.name
+  li Usuwanie
+
+block content
+  form#editStorageAreaForm(method='post', action='/storageAreas/#{storageArea.id}')
+    input(name='_method', value='delete', type='hidden')
+    p Czy na pewno chcesz usunąć wybrane pole odkładcze?
+    .form-actions
+      input.btn.btn-primary(type='submit', value='Usuń')

@@ -1,0 +1,17 @@
+extends ../page
+
+prepend page-title
+  | Pole odkładcze -
+
+block page-breadcrumbs
+  li: a(href='/storageAreas') Pola odkładcze
+  li= storageArea.name
+
+block page-actions
+  li!= actionText('edit', '/storageAreas/' + storageArea.id + ';edit', 'Edytuj')
+  li!= actionText('remove', '/storageAreas/' + storageArea.id + ';delete', 'Usuń')
+
+block content
+  dl.well
+    dt Nazwa
+    dd= storageArea.name

@@ -1,0 +1,15 @@
+extends ../page
+
+prepend page-title
+  | Dodawanie nowego pola odkładczego -
+
+block page-breadcrumbs
+  li: a(href='/storageAreas') Pola odkładcze
+  li Dodawanie
+
+block content
+  form#addStorageAreaForm(method='post', action='/storageAreas', autocomplete='off')
+    include form
+
+append scripts
+  script(src='/js/storageAreas/form.js')

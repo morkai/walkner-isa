@@ -1,0 +1,17 @@
+extends ../page
+
+prepend page-title
+  | Edytowanie pola odkładczego -
+
+block page-breadcrumbs
+  li: a(href='/storageAreas') Pola odkładcze
+  li: a(href='/storageAreas/#{storageArea.id}')= storageArea.name
+  li Edycja
+
+block content
+  form#editStorageAreaForm(method='post', action='/storageAreas/#{storageArea.id}', autocomplete='off')
+    input(name='_method', value='put', type='hidden')
+    include form
+
+append scripts
+  script(src='/js/storageAreas/form.js')
