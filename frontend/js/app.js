@@ -66,11 +66,38 @@ $.validator.setDefaults({
 
 $(function()
 {
-  $('#hd .alert[data-timeout]').each(function()
+  $('#hd .alert[data-timeout]').each(function setAlertTimeout()
   {
     var $alert = $(this);
     var timeout = parseInt($alert.attr('data-timeout'));
 
     setTimeout(function() { $alert.alert('close'); }, timeout);
   });
+
+  $('table[data-perPage]').each(function adjustTableSpace()
+  {
+    var $table = $(this);
+    var perPage = parseInt($table.attr('data-perPage'));
+
+    if (isNaN(perPage) || perPage < 2)
+    {
+      return;
+    }
+
+    var $tbody = $table.find('tbody');
+    var childCount = $tbody.children().length;
+
+    if (childCount === perPage)
+    {
+      return;
+    }
+
+    var avgHeight = ($tbody.outerHeight(true) / childCount);
+    var missingCount = perPage - childCount;
+    var missingHeight = missingCount * avgHeight;
+    var currentMarginBottom = parseInt($table.css('margin-bottom'));
+    var newMarginBottom = (currentMarginBottom || 0) + missingHeight;
+
+    $table.css('margin-bottom', newMarginBottom + 'px');
+  })
 });

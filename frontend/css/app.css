@@ -108,6 +108,13 @@ body {
   font-weight: bold;
 }
 
+.pagination ul > li > a,
+.pagination ul > li > span {
+  padding: 0;
+  min-width: 38px;
+  box-sizing: border-box;
+}
+
 @media (max-width: 979px) {
   .navbar .brand {
     padding-left: 15px;
