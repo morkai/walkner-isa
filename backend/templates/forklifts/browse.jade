@@ -10,7 +10,7 @@ block page-actions
   li!= actionText('plus', '/forklifts;add', 'Dodaj nowy wózek')
 
 block content
-  table#forkliftsTable.table.table-bordered.table-condensed
+  table#forkliftsTable.table.table-bordered.table-condensed('data-perPage'=pager.limit)
     thead
       th Nazwa
       th.actions Akcje
@@ -31,6 +31,7 @@ block content
                 'data-toggle'='modal',
                 'data-target'='#deleteForkliftDialog',
                 'data-remote'='false'): i.icon-remove
+  != pager.render()
   div#deleteForkliftDialog.modal.hide(tabindex=-1)
     .modal-header
       button.close(type='button', 'data-dismiss'='modal') ×

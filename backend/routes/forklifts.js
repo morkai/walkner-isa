@@ -1,8 +1,9 @@
-
+var step = require('step');
+var pagination = require('../middleware/pagination')();
 
 module.exports = function startForkliftRoutes(app, done)
 {
-  app.get('/forklifts', browseForklifts.bind(null, app));
+  app.get('/forklifts', pagination, browseForklifts.bind(null, app));
 
   app.post('/forklifts', createForklift.bind(null, app));
 
@@ -27,27 +28,52 @@ function browseForklifts(app, req, res, next)
   var criteria = {};
   var selector = {name: 1};
   var options = {
-    sort: {name: 1}
+    sort: {name: 1},
+    limit: req.query.limit,
+    skip: req.query.skip
   };
 
-  Forklift.find(criteria, selector, options, function(err, forklifts)
-  {
-    if (err)
+  step(
+    function countForkliftsStep()
     {
-      return next(err);
-    }
+      Forklift.count(criteria, this);
+    },
+    function findForkliftsStep(err, totalCount)
+    {
+      var nextStep = this;
 
-    res.format({
-      html: function()
+      if (err) return nextStep(err);
+
+      Forklift.find(criteria, selector, options, function(err, forklifts)
       {
-        res.render('forklifts/browse', {forklifts: forklifts});
-      },
-      json: function()
-      {
-        res.send(forklifts);
-      }
-    });
-  });
+        return nextStep(err, forklifts, totalCount);
+      });
+    },
+    function sendResponseStep(err, forklifts, totalCount)
+    {
+      if (err) return next(err);
+
+      res.format({
+        html: function()
+        {
+          res.locals.pager.fill(totalCount, forklifts);
+
+          res.render('forklifts/browse', {
+            forklifts: forklifts
+          });
+        },
+        json: function()
+        {
+          res.send({
+            forklifts: forklifts,
+            totalCount: totalCount,
+            page: req.query.page,
+            limit: req.query.limit
+          });
+        }
+      });
+    }
+  );
 }
 
 function showAddForkliftForm(app, req, res, next)
