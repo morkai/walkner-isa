@@ -1,5 +1,10 @@
 extends ../page
 
+append head
+  if editable
+    link(rel='stylesheet', href='/vendor/jquery/jquery-ui.min.css')
+  link(rel='stylesheet', href='/css/storageAreasMaps/view.css')
+
 prepend page-title
   | Pole odkładcze -
 
@@ -9,10 +14,44 @@ block page-breadcrumbs
   li= storageAreasMap.name
 
 block page-actions
-  li!= actionText('edit', '/storageAreasMaps/' + storageAreasMap.id + ';edit', 'Edytuj')
-  li!= actionText('remove', '/storageAreasMaps/' + storageAreasMap.id + ';delete', 'Usuń')
+  if editable
+    li!= actionText('arrow-left', '/storageAreasMaps/' + storageAreasMap.id, 'Wróć do trybu podglądu')
+  else
+    li!= actionText('map-marker', '/storageAreasMaps/' + storageAreasMap.id + '?mode=edit', 'Zarządzaj znacznikami')
+    li!= actionText('edit', '/storageAreasMaps/' + storageAreasMap.id + ';edit', 'Edytuj')
+    li!= actionText('remove', '/storageAreasMaps/' + storageAreasMap.id + ';delete', 'Usuń')
 
 block content
-  dl.well
-    dt Nazwa
-    dd= storageAreasMap.name
+  div#mapContainer('data-storageAreasMapId'=storageAreasMap.id,class=editable ? 'editable' : undefined)
+    div#mapImgContainer
+      img#mapImg(
+      src='/storageAreasMaps/' + storageAreasMap.id + '/image',
+      width=storageAreasMap.width,
+      height=storageAreasMap.height,
+      alt='Obraz mapy')
+      div.landmarks('data-allow-drag'='true', 'data-show-at-zoom'='0')
+        each marker in storageAreasMap.markers
+          div.item(
+            class=marker.type === 'text' ? 'lable' : 'mark',
+            'data-position'=marker.x + ',' + marker.y,
+            'data-id'=marker.id,
+            'data-storageAreaId'=marker.storageAreaId)
+            div
+              if marker.type === 'text'
+                = marker.text
+              else
+                .text= marker.storageAreaName
+                img(src='/vendor/jquery/smoothZoom/pin.png', alt='!', width=50, height=60)
+
+append scripts
+  if editable
+    script(src='/vendor/jquery/jquery-ui.min.js')
+  else
+    script(src='/vendor/jquery/smoothZoom/jquery.smoothZoom.min.js')
+  script(src='/vendor/underscore.min.js')
+  script(src='/js/storageAreasMaps/view.js')
+  if editable
+    script#labelItemTpl(type='text/x-underscore-template').
+      <div class="item lable" data-position="<%= x %>,<%= y %>">
+        <div><%= text %></div>
+      </div>

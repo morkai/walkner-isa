@@ -103,7 +103,7 @@ module.exports = function setupStorageAreaModel(app, done)
    * @param {String} storageAreasMapId
    * @param {Function} done
    */
-  storageAreasMapSchema.statics.fetchOneWithMarkers = function(storageAreasMapId, done)
+  storageAreasMapSchema.statics.fetchByIdWithMarkers = function(storageAreasMapId, done)
   {
     var StorageAreasMap = this;
     var StorageAreasMapMarker = app.db.model('StorageAreasMapMarker');
@@ -119,7 +119,10 @@ module.exports = function setupStorageAreaModel(app, done)
         if (err) return done(err);
 
         map = map.toObject();
+        map.id = map._id.toString();
         map.markers = markers;
+
+        delete map._id;
 
         return done(null, map);
       });

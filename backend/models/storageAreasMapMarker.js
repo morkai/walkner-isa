@@ -33,7 +33,7 @@ module.exports = function setupStorageAreaModel(app, done)
     var StorageAreasMapMarker = this;
 
     StorageAreasMapMarker.find(
-      {storageAreasMapId: storageAreasMapId},
+      {storageAreasMapId: mongoose.Types.ObjectId(storageAreasMapId)},
       {storageAreasMapId: 0},
       function(err, storageAreasMapMarkers)
       {
@@ -100,14 +100,15 @@ module.exports = function setupStorageAreaModel(app, done)
       storageAreasMapMarkers.forEach(function(storageAreasMapMarker)
       {
         var marker = {
+          id: storageAreasMapMarker.id,
           type: storageAreasMapMarker.type,
-          x: storageAreasMapMarkers.x,
-          y: storageAreasMapMarkers.y
+          x: storageAreasMapMarker.x,
+          y: storageAreasMapMarker.y
         };
 
         if (marker.type === 'text')
         {
-          marker.text = storageAreasMapMarkers.value;
+          marker.text = storageAreasMapMarker.value;
 
           textMarkers.push(marker);
         }

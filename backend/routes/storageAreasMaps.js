@@ -26,6 +26,12 @@ module.exports = function startStorageAreasMapsRoutes(app, done)
 
   app.del('/storageAreasMaps/:id', deleteStorageAreasMap.bind(null, app));
 
+  app.post('/storageAreasMaps/:mapId/markers', createStorageAreasMapMarker.bind(null, app));
+
+  app.put('/storageAreasMaps/:mapId/markers/:markerId', updateStorageAreasMapMarker.bind(null, app));
+
+  app.del('/storageAreasMaps/:mapId/markers/:markerId', deleteStorageAreasMapMarker.bind(null, app));
+
   return done();
 };
 
@@ -173,7 +179,7 @@ function viewStorageAreasMap(app, req, res, next)
 {
   var StorageAreasMap = app.db.model('StorageAreasMap');
 
-  StorageAreasMap.findById(req.params.id, function(err, storageAreasMap)
+  StorageAreasMap.fetchByIdWithMarkers(req.params.id, function(err, storageAreasMap)
   {
     if (err)
     {
@@ -188,7 +194,10 @@ function viewStorageAreasMap(app, req, res, next)
     res.format({
       html: function()
       {
-        res.render('storageAreasMaps/view', {storageAreasMap: storageAreasMap});
+        res.render('storageAreasMaps/view', {
+          storageAreasMap: storageAreasMap,
+          editable: req.query.mode === 'edit'
+        });
       },
       json: function()
       {
@@ -410,4 +419,97 @@ function uploadImageAndThumbnail(StorageAreasMap, imageFile, done)
       });
     }
   );
+}
+
+function createStorageAreasMapMarker(app, req, res, next)
+{
+  var StorageAreasMapMarker = app.db.model('StorageAreasMapMarker');
+
+  res.format({
+    json: function()
+    {
+      var storageAreasMapMarker = new StorageAreasMapMarker(req.body);
+
+      storageAreasMapMarker.set({
+        storageAreasMapId: req.params.mapId
+      });
+
+      storageAreasMapMarker.save(function(err)
+      {
+        if (err)
+        {
+          return next(err);
+        }
+
+        res.format({
+          json: function()
+          {
+            res.send(201, storageAreasMapMarker);
+          }
+        });
+      });
+    }
+  });
+}
+
+function updateStorageAreasMapMarker(app, req, res, next)
+{
+  var StorageAreasMapMarker = app.db.model('StorageAreasMapMarker');
+
+  StorageAreasMapMarker.findById(req.params.markerId, function(err, storageAreasMapMarker)
+  {
+    if (err)
+    {
+      return next(err);
+    }
+
+    if (!storageAreasMapMarker)
+    {
+      return res.send(404);
+    }
+
+    storageAreasMapMarker.set(req.body);
+    storageAreasMapMarker.save(function(err)
+    {
+      if (err)
+      {
+        return next(err);
+      }
+
+      return res.send(storageAreasMapMarker);
+    });
+  });
+}
+
+function deleteStorageAreasMapMarker(app, req, res, next)
+{
+  var StorageAreasMapMarker = app.db.model('StorageAreasMapMarker');
+
+  res.format({
+    json: function()
+    {
+      StorageAreasMapMarker.findById(req.params.markerId, function(err, storageAreasMapMarker)
+      {
+        if (err)
+        {
+          return next(err);
+        }
+
+        if (storageAreasMapMarker === null)
+        {
+          return res.send(404);
+        }
+
+        storageAreasMapMarker.remove(function(err)
+        {
+          if (err)
+          {
+            return next(err);
+          }
+
+          return res.send(204);
+        });
+      });
+    }
+  });
 }
