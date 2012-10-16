@@ -9,7 +9,7 @@ jQuery.extend(jQuery.validator.messages, {
   digits: "Proszę o podanie samych cyfr.",
   creditcard: "Proszę o podanie prawidłowej karty kredytowej.",
   equalTo: "Proszę o podanie tej samej wartości ponownie.",
-  accept: "Proszę o podanie wartości z prawidłowym rozszerzeniem.",
+  accept: "Proszę o podanie pliku o prawidłowym typie.",
   maxlength: jQuery.validator.format("Proszę o podanie nie więcej niż {0} znaków."),
   minlength: jQuery.validator.format("Proszę o podanie przynajmniej {0} znaków."),
   rangelength: jQuery.validator.format("Proszę o podanie wartości o długości od {0} do {1} znaków."),
