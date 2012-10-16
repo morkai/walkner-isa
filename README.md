@@ -63,6 +63,8 @@ Install the dependencies:
 
     $ npm install
 
+Give write permissions to `var/uploads/` directory and all of its subdirectories.
+
 ## Configuration
 
 TODO
