@@ -1,6 +1,8 @@
 module.exports = [
 
   'forklift',
-  'storageArea'
+  'storageArea',
+  'storageAreasMapMarker',
+  'storageAreasMap'
 
 ];

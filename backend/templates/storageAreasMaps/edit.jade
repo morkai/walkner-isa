@@ -1,0 +1,23 @@
+extends ../page
+
+prepend page-title
+  | Edytowanie pola odkładczego -
+
+block page-breadcrumbs
+  li: a(href='/storageAreas') Pola odkładcze
+  li: a(href='/storageAreasMaps') Mapy
+  li: a(href='/storageAreasMaps/#{storageAreasMap.id}')= storageAreasMap.name
+  li Edycja
+
+block content
+  form#editStorageAreasMapForm(
+    method='post',
+    action='/storageAreasMaps/#{storageAreasMap.id}',
+    enctype='multipart/form-data',
+    autocomplete='off')
+    input(name='_method', value='put', type='hidden')
+    - var editing = true
+    include form
+
+append scripts
+  script(src='/js/storageAreasMaps/form.js')

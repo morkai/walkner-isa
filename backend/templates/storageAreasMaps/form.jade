@@ -1,0 +1,12 @@
+.control-group
+  label.control-label(for='storageAreasMap-name') Nazwa:
+  input#storageAreasMap-name.span6(name='name', type='text', value=storageAreasMap.name, autofocus=true)
+.control-group
+  label.control-label(for='storageAreasMap-image') Obraz:
+  input#storageAreasMap-image.span6(name='image', type='file', accept='image/gif,image/png,image/jpeg')
+  if editing
+    small.help-block
+      | Wybierz tylko, jeżeli chcesz nadpisać aktualny obraz mapy. <br>
+      | Zmiana obrazu mapy spowoduje usunięcie wszystkich jej znaczników.
+.form-actions
+  input.btn.btn-primary(type='submit', value='Zapisz')

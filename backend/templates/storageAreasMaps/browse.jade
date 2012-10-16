@@ -1,0 +1,31 @@
+extends ../page
+
+append head
+  link(rel='stylesheet', href='/css/storageAreasMaps/browse.css')
+
+append scripts
+  script(src='/js/storageAreasMaps/browse.js')
+
+prepend page-title
+  | Pola odkładcze -
+
+block page-breadcrumbs
+  li: a(href='/storageAreas') Pola odkładcze
+  li Mapy
+
+block page-actions
+  li!= actionText('plus', '/storageAreasMaps;add', 'Dodaj nowa mapę')
+
+block content
+  if storageAreasMaps.length === 0
+    p Brak map.
+  else
+    ol#storageAreasMapsList
+      each storageAreasMap in storageAreasMaps
+        li
+          a(href='/storageAreasMaps/' + storageAreasMap.id)
+            span= storageAreasMap.name
+            img(src='/storageAreasMaps/' + storageAreasMap.id + '/thumbnail', alt=storageAreasMap.name, height=200)
+          p
+            != actionIcon('pencil', '/storageAreasMaps/' + storageAreasMap.id + ';edit', 'Edytuj mapę')
+            != actionIcon('remove', '/storageAreasMaps/' + storageAreasMap.id + ';delete', 'Usuń mapę')

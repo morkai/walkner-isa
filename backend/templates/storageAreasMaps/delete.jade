@@ -1,0 +1,17 @@
+extends ../page
+
+prepend page-title
+  | Usuwanie mapy -
+
+block page-breadcrumbs
+  li: a(href='/storageAreas') Pola odkładcze
+  li: a(href='/storageAreasMaps') Mapy
+  li: a(href='/storageAreasMaps/#{storageAreasMap.id}')= storageAreasMap.name
+  li Usuwanie
+
+block content
+  form#editStorageAreaForm(method='post', action='/storageAreasMaps/#{storageAreasMap.id}')
+    input(name='_method', value='delete', type='hidden')
+    p Czy na pewno chcesz usunąć wybraną mapę?
+    .form-actions
+      input.btn.btn-primary(type='submit', value='Usuń')

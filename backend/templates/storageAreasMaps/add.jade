@@ -1,0 +1,21 @@
+extends ../page
+
+prepend page-title
+  | Dodawanie nowego pola odkładczego -
+
+block page-breadcrumbs
+  li: a(href='/storageAreas') Pola odkładcze
+  li: a(href='/storageAreasMaps') Mapy
+  li Dodawanie
+
+block content
+  form#addStorageAreasMapForm(
+    method='post',
+    action='/storageAreasMaps',
+    enctype='multipart/form-data',
+    autocomplete='off')
+    - var editing = false
+    include form
+
+append scripts
+  script(src='/js/storageAreasMaps/form.js')

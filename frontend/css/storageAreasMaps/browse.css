@@ -1,0 +1,35 @@
+#storageAreasMapsList {
+  display: block;
+  list-style: none;
+  margin: 0;
+}
+#storageAreasMapsList li {
+  display: inline-block;
+  margin: 0 1em 1em 0;
+}
+#storageAreasMapsList li > a {
+  display: block;
+  background: #08c;
+  color: #FFF;
+  padding-top: 5px;
+}
+#storageAreasMapsList li > a:hover {
+  text-decoration: none;
+  background: #005580;
+}
+#storageAreasMapsList li > a:hover img {
+  border-color: #005580;
+}
+#storageAreasMapsList span {
+  display: block;
+  text-align: center;
+}
+#storageAreasMapsList img {
+  border: 5px solid #08c;
+}
+#storageAreasMapsList p {
+  text-align: center;
+}
+#storageAreasMapsList p a {
+  margin: .5em .25em;
+}
