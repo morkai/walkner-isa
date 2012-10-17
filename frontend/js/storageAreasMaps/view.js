@@ -212,11 +212,6 @@ $(function()
     {
       var $target = $(e.target);
 
-      if ($target.hasClass('item'))
-      {
-        return handleRemoveItem($target);
-      }
-
       if (e.target !== $landmarks[0])
       {
         if ($target.hasClass('item'))
