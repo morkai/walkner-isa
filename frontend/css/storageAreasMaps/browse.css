@@ -1,3 +1,9 @@
+#bd {
+  margin-bottom: 0;
+}
+#ft {
+  margin-top: 0;
+}
 #storageAreasMapsList {
   display: block;
   list-style: none;
