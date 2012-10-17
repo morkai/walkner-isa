@@ -47,9 +47,21 @@ module.exports = function setupStorageAreaModel(app, done)
 
   storageAreasMapSchema.post('remove', function()
   {
-    app.db.model('StorageAreasMap').removeImageAndThumbnail(this.file);
+    var storageAreasMap = this;
 
-    app.db.model('StorageAreasMapMarker').remove({storageAreaId: this._id})
+    app.db.model('StorageAreasMap').removeImageAndThumbnail(storageAreasMap.file);
+
+    app.db.model('StorageAreasMapMarker').remove({storageAreaId: storageAreasMap._id}, function(err)
+    {
+      if (err)
+      {
+        console.error(
+          "Failed to remove the markers for the storage areas map %s: %s",
+          storageAreasMap.name,
+          err.stack || err
+        );
+      }
+    });
   });
 
   /**
