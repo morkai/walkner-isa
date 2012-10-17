@@ -47,6 +47,8 @@ $(function()
 
     var renderLabelItemTpl = _.template($('#labelItemTpl').html());
 
+    var $deleteMarkerDialog = $('#deleteMarkerDialog');
+
     function adjustMarkerPosition($item)
     {
       var pos = $item.attr('data-position').split(',').map(Number);
@@ -115,31 +117,85 @@ $(function()
       });
     }
 
+    $deleteMarkerDialog.find('.btn-primary').on('click', function()
+    {
+      var $btn = $(this);
+      var markerId = $btn.attr('data-markerId');
+      var $item = $landmarks.find('.item[data-id="' + markerId + '"]');
+
+      $item.fadeOut();
+
+      $.ajax({
+        type: 'DELETE',
+        url: '/storageAreasMaps/' + storageAreasMapId + '/markers/' + markerId,
+        success: function()
+        {
+          $item.remove();
+        },
+        error: function(res)
+        {
+          $item.fadeIn();
+
+          $.quickAlert('error', res.responseText);
+        },
+        complete: function()
+        {
+          $deleteMarkerDialog.modal('hide');
+        }
+      });
+
+      return false;
+    });
+
     function handleRemoveItem($item)
     {
-      var answer = window.confirm('R U SURE?');
+      $deleteMarkerDialog.find('.btn-primary').attr('data-markerId', $item.attr('data-id'));
+      $deleteMarkerDialog.modal('show');
+    }
 
-      if (answer)
+    function handleCreateMarker(x, y)
+    {
+      var label = window.prompt('Label:');
+
+      if (!label)
       {
-        $item.fadeOut();
-
-        var markerId = $item.attr('data-id');
-
-        $.ajax({
-          type: 'DELETE',
-          url: '/storageAreasMaps/' + storageAreasMapId + '/markers/' + markerId,
-          success: function()
-          {
-            $item.remove();
-          },
-          error: function(res)
-          {
-            $item.fadeIn();
-
-            $.quickAlert('error', res.responseText);
-          }
-        })
+        return;
       }
+
+      var $label = $(renderLabelItemTpl({
+        x: x,
+        y: y,
+        text: label
+      }));
+
+      $landmarks.append($label);
+
+      adjustMarkerPosition($label);
+
+      $.ajax({
+        type: 'POST',
+        url: '/storageAreasMaps/' + $mapContainer.attr('data-storageAreasMapId') + '/markers',
+        data: {
+          type: 'text',
+          value: label,
+          x: x,
+          y: y
+        },
+        success: function(marker)
+        {
+          $.quickAlert('success', 'Nowy znacznik został pomyślnie zapisany :)');
+
+          $label.attr('data-id', marker._id);
+
+          makeDraggable($label);
+        },
+        error: function(res)
+        {
+          $.quickAlert('error', res.responseText);
+
+          $label.remove();
+        }
+      });
     }
 
     var $items = $landmarks.find('.item');
@@ -178,48 +234,7 @@ $(function()
         return;
       }
 
-      var x = e.offsetX;
-      var y = e.offsetY;
-
-      var label = window.prompt('Label:');
-
-      if (label)
-      {
-        var $label = $(renderLabelItemTpl({
-          x: x,
-          y: y,
-          text: label
-        }));
-
-        $landmarks.append($label);
-
-        adjustMarkerPosition($label);
-
-        $.ajax({
-          type: 'POST',
-          url: '/storageAreasMaps/' + $mapContainer.attr('data-storageAreasMapId') + '/markers',
-          data: {
-            type: 'text',
-            value: label,
-            x: x,
-            y: y
-          },
-          success: function(marker)
-          {
-            $.quickAlert('success', 'Nowy znacznik został pomyślnie zapisany :)');
-
-            $label.attr('data-id', marker._id);
-
-            makeDraggable($label);
-          },
-          error: function(res)
-          {
-            $.quickAlert('error', res.responseText);
-
-            $label.remove();
-          }
-        });
-      }
+      return handleCreateMarker(e.offsetX, e.offsetY);
     });
   }
 });
