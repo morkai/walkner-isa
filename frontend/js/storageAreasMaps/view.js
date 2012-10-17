@@ -16,11 +16,6 @@ $(function()
     height: $mapImg.attr('height') + 'px'
   });
 
-  function resizeMapContainer()
-  {
-    $mapContainer.css('height', window.innerHeight - heightOffset);
-  }
-
   $(window).resize(resizeMapContainer);
   resizeMapContainer();
 
@@ -46,190 +41,197 @@ $(function()
     $mapContainer.addClass('noSmoothZoom');
 
     var renderLabelItemTpl = _.template($('#labelItemTpl').html());
-
     var $deleteMarkerDialog = $('#deleteMarkerDialog');
+    var $deleteMarkerBtn = $deleteMarkerDialog.find('.btn-primary');
 
-    function adjustMarkerPosition($item)
-    {
-      var pos = $item.attr('data-position').split(',').map(Number);
-      var w = $item.outerWidth(true);
-      var h = $item.outerHeight(true);
-      var top = pos[1];
-      var left = pos[0];
+    $mapImgContainer.on('dblclick', onMapImgContainerDblClick);
 
-      left -= w / 2;
+    $deleteMarkerBtn.on('click', onMarkerDeleteBtnClick);
 
-      if ($item.hasClass('mark'))
-      {
-        top += h;
-      }
-      else
-      {
-        top -= h / 2;
-      }
-
-      $item.css({
-        top: top + 'px',
-        left: left + 'px'
-      });
-    }
-
-    function updateMarker(markerId, data)
-    {
-      $.ajax({
-        type: 'PUT',
-        url: '/storageAreasMaps/' + storageAreasMapId + '/markers/' + markerId,
-        data: data,
-        error: function(res)
-        {
-          $.quickAlert('error', res.responseText);
-        }
-      });
-    }
-
-    function makeDraggable($item)
-    {
-      $item.draggable({
-        containment: 'parent',
-        distance: 5,
-        scroll: true,
-        scrollSensitivity: 50,
-        stop: function(e, ui)
-        {
-          var x = ui.position.left;
-          var y = ui.position.top;
-          var w = $item.outerWidth(true);
-          var h = $item.outerHeight(true);
-
-          x += w / 2;
-
-          if ($item.hasClass('mark'))
-          {
-            y -= h;
-          }
-          else
-          {
-            y += h / 2;
-          }
-
-          updateMarker($item.attr('data-id'), {x: x, y: y});
-        }
-      });
-    }
-
-    $deleteMarkerDialog.find('.btn-primary').on('click', function()
-    {
-      var $btn = $(this);
-      var markerId = $btn.attr('data-markerId');
-      var $item = $landmarks.find('.item[data-id="' + markerId + '"]');
-
-      $item.fadeOut();
-
-      $.ajax({
-        type: 'DELETE',
-        url: '/storageAreasMaps/' + storageAreasMapId + '/markers/' + markerId,
-        success: function()
-        {
-          $item.remove();
-        },
-        error: function(res)
-        {
-          $item.fadeIn();
-
-          $.quickAlert('error', res.responseText);
-        },
-        complete: function()
-        {
-          $deleteMarkerDialog.modal('hide');
-        }
-      });
-
-      return false;
-    });
-
-    function handleRemoveItem($item)
-    {
-      $deleteMarkerDialog.find('.btn-primary').attr('data-markerId', $item.attr('data-id'));
-      $deleteMarkerDialog.modal('show');
-    }
-
-    function handleCreateMarker(x, y)
-    {
-      var label = window.prompt('Label:');
-
-      if (!label)
-      {
-        return;
-      }
-
-      var $label = $(renderLabelItemTpl({
-        x: x,
-        y: y,
-        text: label
-      }));
-
-      $landmarks.append($label);
-
-      adjustMarkerPosition($label);
-
-      $.ajax({
-        type: 'POST',
-        url: '/storageAreasMaps/' + $mapContainer.attr('data-storageAreasMapId') + '/markers',
-        data: {
-          type: 'text',
-          value: label,
-          x: x,
-          y: y
-        },
-        success: function(marker)
-        {
-          $.quickAlert('success', 'Nowy znacznik został pomyślnie zapisany :)');
-
-          $label.attr('data-id', marker._id);
-
-          makeDraggable($label);
-        },
-        error: function(res)
-        {
-          $.quickAlert('error', res.responseText);
-
-          $label.remove();
-        }
-      });
-    }
-
-    var $items = $landmarks.find('.item');
-
-    $items.each(function()
+    $landmarks.find('.item').each(function()
     {
       var $item = $(this);
 
       adjustMarkerPosition($item);
       makeDraggable($item);
     });
+  }
 
-    $mapImgContainer.on('dblclick', function(e)
+  function resizeMapContainer()
+  {
+    $mapContainer.css('height', window.innerHeight - heightOffset);
+  }
+
+  function adjustMarkerPosition($item)
+  {
+    var pos = $item.attr('data-position').split(',').map(Number);
+    var w = $item.outerWidth(true);
+    var h = $item.outerHeight(true);
+    var top = pos[1];
+    var left = pos[0];
+
+    left -= w / 2;
+
+    if ($item.hasClass('mark'))
     {
-      var $target = $(e.target);
+      top += h;
+    }
+    else
+    {
+      top -= h / 2;
+    }
 
-      if (e.target !== $landmarks[0])
+    $item.css({
+      top: top + 'px',
+      left: left + 'px'
+    });
+  }
+
+  function updateMarker(markerId, data)
+  {
+    $.ajax({
+      type: 'PUT',
+      url: '/storageAreasMaps/' + storageAreasMapId + '/markers/' + markerId,
+      data: data,
+      error: function(res)
       {
-        if ($target.hasClass('item'))
+        $.quickAlert('error', res.responseText);
+      }
+    });
+  }
+
+  function makeDraggable($item)
+  {
+    $item.draggable({
+      containment: 'parent',
+      distance: 5,
+      scroll: true,
+      scrollSensitivity: 50,
+      stop: function(e, ui)
+      {
+        var x = ui.position.left;
+        var y = ui.position.top;
+        var w = $item.outerWidth(true);
+        var h = $item.outerHeight(true);
+
+        x += w / 2;
+
+        if ($item.hasClass('mark'))
         {
-          return handleRemoveItem($target);
+          y -= h;
+        }
+        else
+        {
+          y += h / 2;
         }
 
-        $target = $target.closest('.item');
+        updateMarker($item.attr('data-id'), {x: x, y: y});
+      }
+    });
+  }
 
-        if ($target.length === 1)
-        {
-          return handleRemoveItem($target);
-        }
+  function handleRemoveItem($item)
+  {
+    $deleteMarkerBtn.attr('data-markerId', $item.attr('data-id'));
+    $deleteMarkerDialog.modal('show');
+  }
 
-        return;
+  function handleCreateMarker(x, y)
+  {
+    var label = window.prompt('Label:');
+
+    if (!label)
+    {
+      return;
+    }
+
+    var $label = $(renderLabelItemTpl({
+      x: x,
+      y: y,
+      text: label
+    }));
+
+    $landmarks.append($label);
+
+    adjustMarkerPosition($label);
+
+    $.ajax({
+      type: 'POST',
+      url: '/storageAreasMaps/' + storageAreasMapId + '/markers',
+      data: {
+        type: 'text',
+        value: label,
+        x: x,
+        y: y
+      },
+      success: function(marker)
+      {
+        $.quickAlert('success', 'Nowy znacznik został pomyślnie zapisany :)');
+
+        $label.attr('data-id', marker._id);
+
+        makeDraggable($label);
+      },
+      error: function(res)
+      {
+        $.quickAlert('error', res.responseText);
+
+        $label.remove();
+      }
+    });
+  }
+
+  function onMarkerDeleteBtnClick()
+  {
+    var $btn = $(this);
+    var markerId = $btn.attr('data-markerId');
+    var $item = $landmarks.find('.item[data-id="' + markerId + '"]');
+
+    $item.fadeOut();
+
+    $.ajax({
+      type: 'DELETE',
+      url: '/storageAreasMaps/' + storageAreasMapId + '/markers/' + markerId,
+      success: function()
+      {
+        $item.remove();
+      },
+      error: function(res)
+      {
+        $item.fadeIn();
+
+        $.quickAlert('error', res.responseText);
+      },
+      complete: function()
+      {
+        $deleteMarkerDialog.modal('hide');
+      }
+    });
+
+    return false;
+  }
+
+  function onMapImgContainerDblClick(e)
+  {
+    var $target = $(e.target);
+
+    if (e.target !== $landmarks[0])
+    {
+      if ($target.hasClass('item'))
+      {
+        return handleRemoveItem($target);
       }
 
-      return handleCreateMarker(e.offsetX, e.offsetY);
-    });
+      $target = $target.closest('.item');
+
+      if ($target.length === 1)
+      {
+        return handleRemoveItem($target);
+      }
+
+      return;
+    }
+
+    return handleCreateMarker(e.offsetX, e.offsetY);
   }
 });
