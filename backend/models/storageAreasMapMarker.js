@@ -114,7 +114,7 @@ module.exports = function setupStorageAreaModel(app, done)
         }
         else
         {
-          marker.storageAreaId = storageAreasMapMarker.value;
+          marker.storageAreaId = storageAreasMapMarker.value.toString();
           marker.storageAreaName = null;
 
           storageAreaMarkersIds.push(marker.storageAreaId);
