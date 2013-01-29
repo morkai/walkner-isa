@@ -1,0 +1,69 @@
+#ft,
+.page-header {
+  display: none;
+}
+#workingStorageAreas {
+  margin-top: 2em;
+  text-align: center;
+}
+.workingStorageArea {
+  display: inline-block;
+  margin: 0 2em 2em 0;
+  padding: 1em;
+  position: relative;
+  text-align: left;
+  border: 1px solid #D4D4D4;
+  border-radius: .25em;
+  background: #FAFAFA;
+  background-image: -moz-linear-gradient(top, white, #F2F2F2);
+  background-image: -webkit-linear-gradient(top, white, #F2F2F2);
+  background-image: -o-linear-gradient(top, white, #F2F2F2);
+  background-image: -ms-linear-gradient(top, white, #F2F2F2);
+  background-image: linear-gradient(top, white, #F2F2F2);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
+}
+.workingStorageArea h1 {
+  font-size: 4em;
+  line-height: 1;
+  margin: 0 2.5em 0 0;
+  padding: 0;
+  text-transform: uppercase;
+  text-shadow: 0 1px 3px #999;
+}
+.indicator {
+  position: absolute;
+  top: 1em;
+  width: 4em;
+  height: 4em;
+  box-shadow: 0 1px 3px #666;
+  border-radius: .25em;
+  background: #808080;
+  background: -moz-radial-gradient(center, ellipse cover, #FEFCEA 0%, #808080 100%);
+  background: -webkit-radial-gradient(center, ellipse cover, #FEFCEA 0%, #808080 100%);
+  background: -o-radial-gradient(center, ellipse cover, #FEFCEA 0%, #808080 100%);
+  background: -ms-radial-gradient(center, ellipse cover, #FEFCEA 0%, #808080 100%);
+  background: radial-gradient(center, ellipse cover, #FEFCEA 0%, #808080 100%);
+}
+.indicator-loaded {
+  right: 6em;
+}
+.workingStorageArea[data-state="loaded"] .indicator-loaded,
+.workingStorageArea[data-state="unloading"] .indicator-loaded {
+  background: #5AAB25;
+  background: -moz-radial-gradient(center, ellipse cover, #FEFCEA 0%, #5AAB25 100%);
+  background: -webkit-radial-gradient(center, ellipse cover, #FEFCEA 0%, #5AAB25 100%);
+  background: -o-radial-gradient(center, ellipse cover, #FEFCEA 0%, #5AAB25 100%);
+  background: -ms-radial-gradient(center, ellipse cover, #FEFCEA 0%, #5AAB25 100%);
+  background: radial-gradient(center, ellipse cover, #FEFCEA 0%, #5AAB25 100%);
+}
+.indicator-unloading {
+  right: 1em;
+}
+.workingStorageArea[data-state="unloading"] .indicator-unloading {
+  background: #F0A000;
+  background: -moz-radial-gradient(center, ellipse cover, #FEFCEA 0%, #F0A000 100%);
+  background: -webkit-radial-gradient(center, ellipse cover, #FEFCEA 0%, #F0A000 100%);
+  background: -o-radial-gradient(center, ellipse cover, #FEFCEA 0%, #F0A000 100%);
+  background: -ms-radial-gradient(center, ellipse cover, #FEFCEA 0%, #F0A000 100%);
+  background: radial-gradient(center, ellipse cover, #FEFCEA 0%, #F0A000 100%);
+}

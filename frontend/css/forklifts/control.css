@@ -1,0 +1,36 @@
+#hd,
+#ft {
+  display: none;
+}
+.loadedStorageArea {
+  margin: 1em 0;
+  padding: .25em .5em;
+  position: relative;
+  text-align: left;
+  border: 1px solid #D4D4D4;
+  border-radius: .25em;
+  background: #FAFAFA;
+  background-image: -moz-linear-gradient(top, white, #F2F2F2);
+  background-image: -webkit-linear-gradient(top, white, #F2F2F2);
+  background-image: -o-linear-gradient(top, white, #F2F2F2);
+  background-image: -ms-linear-gradient(top, white, #F2F2F2);
+  background-image: linear-gradient(top, white, #F2F2F2);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
+}
+.loadedStorageArea h1 {
+  font-size: 4em;
+  line-height: 1;
+  margin: 0 2.5em 0 0;
+  padding: 0;
+  text-transform: uppercase;
+  text-shadow: 0 1px 3px #999;
+}
+.loadedStorageArea .btn-primary {
+  position: absolute;
+  margin-top: 0;
+  top: .1em;
+  right: .15em;
+  font-size: 3.5em;
+  line-height: 1;
+  padding: 0 .2em .05em .25em;
+}

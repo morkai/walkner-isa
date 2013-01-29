@@ -3,5 +3,18 @@ extends ../page
 block page-breadcrumbs
   li Dashboard
 
+append head
+  link(rel='stylesheet', href='/css/dashboard.css')
+
 block content
-  p TODO
+  #workingStorageAreas
+    each workingStorageArea in workingStorageAreas
+      .workingStorageArea(
+        'data-storageAreaId'=workingStorageArea.storageArea.id,
+        'data-state'=workingStorageArea.state)
+        h1= workingStorageArea.storageArea.name
+        .indicator.indicator-loaded
+        .indicator.indicator-unloading
+
+append scripts
+  script(src='/js/dashboard.js')

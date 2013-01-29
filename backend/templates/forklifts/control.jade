@@ -1,0 +1,22 @@
+extends ../page
+
+prepend page-title
+  | Panel kontrolny wózka -
+
+append head
+  link(rel='stylesheet', href='/css/forklifts.css')
+
+block page-breadcrumbs
+  li: a(href='/forklifts') Wózki
+  li: a(href='/forklifts/' + forklift.id)= forklift.name
+  li Panel kontrolny
+
+block content
+  .loadedStorageAreas
+    each loadedStorageArea in loadedStorageAreas
+      .loadedStorageArea('data-id'=loadedStorageArea.storageArea.id)
+        button.btn.btn-primary.action-unloading &#8680;
+        h1= loadedStorageArea.storageArea.name
+
+append scripts
+  script(src='/forklifts/control.js')
