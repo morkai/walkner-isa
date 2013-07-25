@@ -4,7 +4,7 @@ prepend page-title
   | Panel kontrolny wózka -
 
 append head
-  link(rel='stylesheet', href='/css/forklifts.css')
+  link(rel='stylesheet', href='/css/forklifts/control.css')
 
 block page-breadcrumbs
   li: a(href='/forklifts') Wózki
@@ -12,11 +12,36 @@ block page-breadcrumbs
   li Panel kontrolny
 
 block content
-  .loadedStorageAreas
+  if unloadingStorageArea
+    #unloadingStorageAreaContainer
+      #unloadingStorageArea.storageAreaBar(
+        'data-storageAreaId'=unloadingStorageArea.storageArea.id,
+        'data-forkliftId'=forklift.id)
+        button.btn.btn-primary.action-unloaded(title='Pole odkładcze rozładowane') &#8678;
+        button.btn.action-focus(title='Pokaż na mapie'): img(src='/img/mapmarker.png', alt='!')
+        h1= unloadingStorageArea.storageArea.name
+      #map
+        #mapImgContainer
+          img(src='/img/map.gif', width=2883, height=2179)
+          .landmarks('data-allow-drag'='true', 'data-allow-scale'='false', 'data-show-at-zoom'='0')
+            .item.mark('data-position'='100,100')
+              div
+                .text: strong= unloadingStorageArea.storageArea.name
+                img(src='/vendor/jquery/smoothZoom/pin.png', alt='', width='50px', height='40px')
+  p#noLoadedStorageAreas
+    | Aktualnie nie ma żadnych załadowanych pól odkładczych.
+  #loadedStorageAreas('data-forkliftId'=forklift.id)
     each loadedStorageArea in loadedStorageAreas
-      .loadedStorageArea('data-id'=loadedStorageArea.storageArea.id)
-        button.btn.btn-primary.action-unloading &#8680;
+      .loadedStorageArea.storageAreaBar('data-storageAreaId'=loadedStorageArea.storageArea.id)
+        button.btn.btn-primary.action-unloading(title='Rozpocznij rozładowywanie pola odkładczego') &#8680;
         h1= loadedStorageArea.storageArea.name
 
 append scripts
-  script(src='/forklifts/control.js')
+  script(src='/vendor/jquery/smoothZoom/jquery.smoothZoom.min.js')
+  script(src='/vendor/underscore.min.js')
+  script(src='/js/forklifts/control.js')
+  script#loadedStorageAreaTpl(type='text/x-underscore-template').
+    <div class="loadedStorageArea" data-storageAreaId="<%= storageArea.id %>">
+      <button class="btn btn-primary action-unloading">&#8680;</button>
+      <h1><%- storageArea.name %></h1>
+    </div>

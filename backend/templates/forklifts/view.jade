@@ -8,6 +8,7 @@ block page-breadcrumbs
   li= forklift.name
 
 block page-actions
+  li!= actionText('cog', '/forklifts/' + forklift.id + ';control', 'Kontroluj')
   li!= actionText('edit', '/forklifts/' + forklift.id + ';edit', 'Edytuj')
   li!= actionText('remove', '/forklifts/' + forklift.id + ';delete', 'Usuń')
 

@@ -40,6 +40,9 @@
   display: none;
   color: #FFF;
 }
+.item img {
+  max-width: none;
+}
 .lable div {
   max-width: 150px;
   white-space: nowrap;

@@ -57,6 +57,19 @@ $(function()
     });
   }
 
+  var $tooltip = $('<div></div>').appendTo('body').css({
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    background: '#000',
+    color: '#FFF'
+  });
+
+  $mapImgContainer.on('mousemove', function(e)
+  {
+    $tooltip.html(e.offsetX + 'x' + e.offsetY);
+  });
+
   function resizeMapContainer()
   {
     $mapContainer.css('height', window.innerHeight - heightOffset);
@@ -114,6 +127,8 @@ $(function()
         var w = $item.outerWidth(true);
         var h = $item.outerHeight(true);
 
+        console.log(x, y, w, h);
+
         x += w / 2;
 
         if ($item.hasClass('mark'))
@@ -124,6 +139,8 @@ $(function()
         {
           y += h / 2;
         }
+
+        console.log(x, y, w, h);
 
         updateMarker($item.attr('data-id'), {x: x, y: y});
       }

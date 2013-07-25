@@ -1,5 +1,5 @@
 // TODO: Move to config file
-var PORT = 80;
+var PORT = 3001;
 
 var util = require('util');
 var http = require('http');

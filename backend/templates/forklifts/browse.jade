@@ -24,6 +24,7 @@ block content
             td= forklift.name
             td.actions
               != actionIcon('list', '/forklifts/' + forklift.id, 'Wyświetl szczegóły wózka')
+              != actionIcon('cog', '/forklifts/' + forklift.id + ';control', 'Kontroluj wózek')
               != actionIcon('pencil', '/forklifts/' + forklift.id + ';edit', 'Edytuj wózek')
               a.btn.action-delete(
                 href='/forklifts/' + forklift.id + ';delete',

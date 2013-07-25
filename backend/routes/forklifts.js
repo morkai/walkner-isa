@@ -13,6 +13,8 @@ module.exports = function startForkliftRoutes(app, done)
 
   app.get('/forklifts/:id;delete', showDeleteForkliftForm.bind(null, app));
 
+  app.get('/forklifts/:id;control', showForkliftController.bind(null, app));
+
   app.get('/forklifts/:id', viewForklift.bind(null, app));
 
   app.put('/forklifts/:id', updateForklift.bind(null, app));
@@ -267,6 +269,38 @@ function deleteForklift(app, req, res, next)
           res.send(204);
         }
       });
+    });
+  });
+}
+
+function showForkliftController(app, req, res, next)
+{
+  var Forklift = app.db.model('Forklift');
+
+  Forklift.findById(req.params.id, function(err, forklift)
+  {
+    if (err)
+    {
+      return next(err);
+    }
+
+    if (forklift === null)
+    {
+      return res.send(404);
+    }
+
+    var loadedStorageAreas = app.dashboard.getLoadedStorageAreas();
+    var unloadingStorageArea = app.dashboard.getUnloadingStorageArea(forklift.id);
+
+    res.format({
+      html: function()
+      {
+        res.render('forklifts/control', {
+          forklift: forklift,
+          loadedStorageAreas: loadedStorageAreas,
+          unloadingStorageArea: unloadingStorageArea
+        });
+      }
     });
   });
 }
