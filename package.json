@@ -2,7 +2,7 @@
   "name": "walkner-isa",
   "version": "0.0.0",
   "description": "Intermediate Storage Area management and monitoring application in Node.js.",
-  "license": "NPOSL-3.0",
+  "license": "CC BY-NC-SA 4.0",
   "homepage": "https://github.com/morkai/walkner-isa",
   "author": {
     "name": "Łukasz Walukiewicz",

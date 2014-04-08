@@ -96,5 +96,6 @@ Application should be available on a port defined in the `modules/httpServer.js`
 
 ## License
 
-This project is released under the
-[NPOSL-3.0](https://raw.github.com/morkai/walkner-isa/master/license.md).
+walkner-isa is released under the [CC BY-NC-SA 4.0 License](https://github.com/morkai/walkner-isa/blob/master/license.md).
+
+Copyright (c) 2014, Łukasz Walukiewicz (lukasz@walukiewicz.eu). Some Rights Reserved.
